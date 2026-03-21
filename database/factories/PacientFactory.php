@@ -17,8 +17,13 @@ class PacientFactory extends Factory
      */
     public function definition(): array
     {
+        $gender = $this->faker->randomElement(["male", "female"]);
         return [
-            //
+            "name"=> $gender === "male" ? fake()->firstNameMale() : fake()->firstNameFemale(),
+            "lastname"=>fake()->lastName(),
+            "phone_number"=>fake()->numerify("####-####"),
+            "dui"=>fake()->numerify("########-#"),
+            "gender"=>$gender,
         ];
     }
 }
