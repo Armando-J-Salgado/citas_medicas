@@ -13,7 +13,7 @@ class SchedulePolicy
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return $user->hasAnyRole(['administrador', 'medico', 'asistente']);
     }
 
     /**
@@ -21,7 +21,11 @@ class SchedulePolicy
      */
     public function view(User $user, Schedule $schedule): bool
     {
-        return false;
+        if ($user->hasRole('medico')) {
+            return $schedule->user_id === $user->id;
+        }
+
+        return $user->hasAnyRole(['administrador', 'asistente']);
     }
 
     /**
@@ -29,7 +33,7 @@ class SchedulePolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return $user->hasAnyRole(['administrador', 'medico', 'asistente']);
     }
 
     /**
@@ -37,7 +41,11 @@ class SchedulePolicy
      */
     public function update(User $user, Schedule $schedule): bool
     {
-        return false;
+         if ($user->hasRole('medico')) {
+            return $schedule->user_id === $user->id;
+        }
+        
+        return $user->hasAnyRole(['administrador', 'medico', 'asistente']);
     }
 
     /**

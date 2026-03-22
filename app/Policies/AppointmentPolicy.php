@@ -13,7 +13,7 @@ class AppointmentPolicy
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return $user->hasAnyRole(['administrador', 'medico', 'asistente']);
     }
 
     /**
@@ -21,7 +21,10 @@ class AppointmentPolicy
      */
     public function view(User $user, Appointment $appointment): bool
     {
-        return false;
+        if ($user->hasRole('medico')) {
+            return $appointment->user_id === $user->id;
+        }
+        return $user->hasAnyRole(['administrador', 'asistente']);
     }
 
     /**
@@ -29,7 +32,7 @@ class AppointmentPolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return $user->hasAnyRole(['administrador', 'medico', 'asistente']);
     }
 
     /**
@@ -37,7 +40,7 @@ class AppointmentPolicy
      */
     public function update(User $user, Appointment $appointment): bool
     {
-        return false;
+        return $user->hasAnyRole(['administrador', 'medico', 'asistente']);
     }
 
     /**

@@ -13,7 +13,7 @@ class MedicalHistoryPolicy
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return $user->hasAnyRole(['administrador', 'medico', 'asistente']);
     }
 
     /**
@@ -21,7 +21,7 @@ class MedicalHistoryPolicy
      */
     public function view(User $user, MedicalHistory $medicalHistory): bool
     {
-        return false;
+        return $user->hasAnyRole(['administrador', 'medico', 'asistente']);
     }
 
     /**
@@ -29,7 +29,7 @@ class MedicalHistoryPolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return $user->hasAnyRole(['administrador', 'medico','asistente']);
     }
 
     /**
@@ -37,7 +37,7 @@ class MedicalHistoryPolicy
      */
     public function update(User $user, MedicalHistory $medicalHistory): bool
     {
-        return false;
+        return $user->hasAnyRole(['administrador', 'medico']);
     }
 
     /**

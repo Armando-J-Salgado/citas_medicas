@@ -21,10 +21,19 @@ class UserSeeder extends Seeder
             "name"=>"Admin",
             "email"=> "admin@mail.com",
             "password"=>Hash::make("Software@26"),
-        ]);
+        ])->assignRole("administrador");
+
+
+        // Usuarios asistentes
+        User::factory(5)->asistente()->create()->each(function ($user) {
+            $user->assignRole("asistente");
+        });
 
         //Este solo aplicará para los perfiles de rol doctor
-        User::factory(20)->create()->each(function ($user) {
+        User::factory(20)->doctor()->create()->each(function ($user) {
+
+            $user->assignRole("medico");
+
             $days = [0,1,2,3,4,5,6,];
             shuffle($days);
             $selectedDays = array_slice($days,0,random_int(1, 5));

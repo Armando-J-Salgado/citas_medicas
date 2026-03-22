@@ -2,26 +2,25 @@
 
 namespace App\Policies;
 
-use App\Models\Pacient;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
-class PacientPolicy
+class UserPolicy
 {
     /**
      * Determine whether the user can view any models.
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasAnyRole(['administrador', 'medico', 'asistente']);
+        return $user->hasRole('administrador');
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Pacient $pacient): bool
+    public function view(User $user, User $model): bool
     {
-        return $user->hasAnyRole(['administrador', 'medico', 'asistente']);
+        return $user->hasRole('administrador');
     }
 
     /**
@@ -29,21 +28,21 @@ class PacientPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasAnyRole(['administrador', 'asistente']);
+        return $user->hasRole('administrador');
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Pacient $pacient): bool
+    public function update(User $user, User $model): bool
     {
-        return $user->hasAnyRole(['administrador', 'asistente']);
+        return $user->hasRole('administrador');
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Pacient $pacient): bool
+    public function delete(User $user, User $model): bool
     {
         return false;
     }
@@ -51,7 +50,7 @@ class PacientPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Pacient $pacient): bool
+    public function restore(User $user, User $model): bool
     {
         return false;
     }
@@ -59,7 +58,7 @@ class PacientPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Pacient $pacient): bool
+    public function forceDelete(User $user, User $model): bool
     {
         return false;
     }
