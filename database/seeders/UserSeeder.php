@@ -53,10 +53,33 @@ class UserSeeder extends Seeder
                     ]);
 
                     //Generar appointments
+
+                    //Información del paciente
                     $pacientId = random_int(1, 50);
                     $pacient = Pacient::firstWhere('id', $pacientId);
-                    $date = fake()->dateTimeBetween($pacient->medicalHistory->date_of_birth, now());
-                    $date = $date->format('Y-m-d');
+                    $birthDate = $pacient->medicalHistory->date_of_birth;
+
+                    //Fecha aleatoria posterior al nacimiento
+                    $randomDate = fake()->dateTimeBetween($birthDate, now());
+                    $carbon = Carbon::parse($randomDate);
+                    //Determina cuántas fechas avanzar para conseguir un día coincidente (Lunes con Lunes)
+                    $diff = ($day - $carbon->dayOfWeek + 7) % 7;
+                    $carbon->addDays($diff);
+                    //Evalúa si la fecha no sobrepasa la fecha actual
+                    if ($carbon->isFuture()) {
+                        //Regresa 7 días atrás para mantener el día (Lunes regresa a Lunes)
+                        $carbon->subDays(7);
+                    }
+                    //Verificación final: Sigue siendo mayor al nacimiento
+                    $birth = Carbon::parse($birthDate);
+                    if ($carbon->lessThanOrEqualTo($birth)) {
+                        //No se crea un appointment porque la fecha no es posible
+                        continue;
+                    }
+                    //Se crea la fecha
+                    $date = $carbon->format('Y-m-d');
+
+                    //Cita médica creada
                     Appointment::create([
                         "start_at"=> $date . ' ' . $start . ":00:00",
                         "end_at" => $date . ' ' . $start . ":30:00",
@@ -66,9 +89,5 @@ class UserSeeder extends Seeder
                 }
             }
         });
-        //TO DO: A quién le toquen roles y policies, LA FUNCIÓN DE ARRIBA SE MODIFICA SEGUN LAS SIGUIENTES INDICACIONES:
-        //usar User::factory([numero_copias])->[funcion_role]()->create() para crear usuarios con roles especificos
-        //ej. User::factory(15)->doctor()->create();
-        //ej. User::factory(15)->asistente()->create();
     }
 }
