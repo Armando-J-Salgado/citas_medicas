@@ -25,7 +25,7 @@ class UserSeeder extends Seeder
 
 
         // Usuarios asistentes
-        User::factory(5)->asistente()->create()->each(function ($user) {
+        User::factory(10)->asistente()->create()->each(function ($user) {
             $user->assignRole("asistente");
         });
 
