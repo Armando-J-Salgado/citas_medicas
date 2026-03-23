@@ -43,6 +43,11 @@ class User extends Authenticatable
         'is_active',
     ];
 
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
     public function schedules(): HasMany 
     {
         return $this->hasMany(Schedule::class);
