@@ -20,7 +20,7 @@ class StatsOverview extends StatsOverviewWidget
                 ->description('Citas programadas para hoy')
                 ->icon('heroicon-o-calendar-days')
                 ->color('success'),
-            Stat::make('Citas del mes', Appointment::whereMonth('start_at', now()->month)->count())
+            Stat::make('Citas del mes', Appointment::whereMonth('start_at', now()->month)->whereYear('start_at', now()->year)->count())
                 ->description('Citas en '.now()->translatedFormat('F'))
                 ->icon('heroicon-o-chart-bar')
                 ->color('warning'),
