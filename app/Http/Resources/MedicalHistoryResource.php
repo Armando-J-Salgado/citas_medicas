@@ -17,7 +17,7 @@ class MedicalHistoryResource extends JsonResource
         return [
             'id' => $this->id,
             'pacient_id' => $this->pacient_id,
-            'weight' => $this->weight . ' lb',
+            'weight' => $this->weight . ' kg',
             'height' => $this->height . ' m',
             'chronic_diseases' => $this->chronic_diseases,
             'allergies' => $this->allergies,
