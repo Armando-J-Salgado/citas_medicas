@@ -16,25 +16,43 @@ Route::middleware('auth:sanctum')->prefix('/v1')->group(function () {
     //Routes that require Authentication go here
     // TODO: CRUD users
     Route::get('/users', [UserController::class, 'index']);
-    Route::get('/users/{id}', [UserController::class, 'show']);
+    Route::get('/users/{id}', [UserController::class, 'show'])
+    ->missing(fn () => response()
+    ->json(['message' => 'There are no matches for the searched user'], 404));;
     Route::post('/users', [UserController::class, 'store']);
-    Route::put('/users/{id}', [UserController::class, 'update']);
-    Route::delete('/users/{id}', [UserController::class, 'destroy']);
+    Route::put('/users/{id}', [UserController::class, 'update'])
+    ->missing(fn () => response()
+    ->json(['message' => 'There are no matches for the searched user'], 404));;
+    Route::delete('/users/{id}', [UserController::class, 'destroy'])
+    ->missing(fn () => response()
+    ->json(['message' => 'There are no matches for the searched user'], 404));;
 
     // TODO: CRUD Schedule para médicos
     // For updating, the doctor must be informed that previous appointments can not be changed, but future ones could be
     Route::get('/schedules', [ScheduleController::class, 'index']);
-    Route::get('/schedules/{id}', [ScheduleController::class, 'show']);
+    Route::get('/schedules/{id}', [ScheduleController::class, 'show'])
+    ->missing(fn () => response()
+    ->json(['message' => 'There are no matches for the searched schedule'], 404));;
     Route::post('/schedules', [ScheduleController::class, 'store']);
-    Route::put('/schedules/{id}', [ScheduleController::class, 'update']);
-    Route::delete('/schedules/{id}', [ScheduleController::class, 'destroy']);
+    Route::put('/schedules/{id}', [ScheduleController::class, 'update'])
+    ->missing(fn () => response()
+    ->json(['message' => 'There are no matches for the searched schedule'], 404));;
+    Route::delete('/schedules/{id}', [ScheduleController::class, 'destroy'])
+    ->missing(fn () => response()
+    ->json(['message' => 'There are no matches for the searched schedule'], 404));;
 
     // TODO: CRUD Appointment for pacients
     Route::get('/appointments', [AppointmentController::class, 'index']);
-    Route::get('/appointments/{id}', [AppointmentController::class, 'show']);
+    Route::get('/appointments/{id}', [AppointmentController::class, 'show'])
+    ->missing(fn () => response()
+    ->json(['message' => 'There are no matches for the searched appointment'], 404));;
     Route::post('/appointments', [AppointmentController::class, 'store']);
-    Route::put('/appointments/{id}', [AppointmentController::class, 'update']);
-    Route::delete('/appointments/{id}', [AppointmentController::class, 'destroy']);
+    Route::put('/appointments/{id}', [AppointmentController::class, 'update'])
+    ->missing(fn () => response()
+    ->json(['message' => 'There are no matches for the searched appointment'], 404));;
+    Route::delete('/appointments/{id}', [AppointmentController::class, 'destroy'])
+    ->missing(fn () => response()
+    ->json(['message' => 'There are no matches for the searched appointment'], 404));;
     
     //Authtentication routes
     Route::get('/auth/profile', [AuthController::class, 'profile']);
@@ -46,7 +64,9 @@ Route::middleware('auth:sanctum')->prefix('/v1')->group(function () {
     Route::get('pacient/{pacient}',[PacientController::class,'show'])
     ->missing(fn () => response()
     ->json(['message' => 'There are no matches for the searched patient'], 404));;
-    Route::patch('pacient/{pacient}',[PacientController::class,'update']);
+    Route::patch('pacient/{pacient}',[PacientController::class,'update'])
+    ->missing(fn () => response()
+    ->json(['message' => 'There are no matches for the searched patient'], 404));;
 
     //Medical History routes
     Route::get('medical-history',[MedicalHistoryController::class,'index']);
@@ -54,6 +74,8 @@ Route::middleware('auth:sanctum')->prefix('/v1')->group(function () {
     Route::get('medical-history/{medicalHistory}',[MedicalHistoryController::class,'show'])
     ->missing(fn () => response()
     ->json(['message' => 'There are no matches for the searched medical history'], 404));;
-    Route::patch('medical-history/{medicalHistory}',[MedicalHistoryController::class,'update']);
+    Route::patch('medical-history/{medicalHistory}',[MedicalHistoryController::class,'update'])
+    ->missing(fn () => response()
+    ->json(['message' => 'There are no matches for the searched medical history'], 404));;
 
 });
