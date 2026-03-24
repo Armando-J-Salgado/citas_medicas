@@ -32,7 +32,6 @@ class RoleSeeder extends Seeder
 
         $asistente->syncPermissions([
             'pacients.view', 'pacients.create', 'pacients.update',
-            'medical_histories.view', 'medical_histories.create',
             'schedules.view', 'schedules.create', 'schedules.update',
             'appointments.view', 'appointments.create', 'appointments.update',
         ]);
