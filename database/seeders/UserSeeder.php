@@ -33,7 +33,7 @@ class UserSeeder extends Seeder
             "name"=> "Johny Storm",
             "email"=>"asistente@email.com",
             "password"=>Hash::make("Software@26"),
-        ]);
+        ])->assignRole("asistente");
 
         // Usuarios asistentes
         User::factory(10)->asistente()->create()->each(function ($user) {
@@ -68,7 +68,7 @@ class UserSeeder extends Seeder
                     //Información del paciente
                     $pacientId = random_int(1, 50);
                     $pacient = Pacient::firstWhere('id', $pacientId);
-                    $birthDate = $pacient->medicalHistory->date_of_birth;
+                    $birthDate = $pacient->medicalHistory()->first()->date_of_birth;
 
                     //Fecha aleatoria posterior al nacimiento
                     $randomDate = fake()->dateTimeBetween($birthDate, now());

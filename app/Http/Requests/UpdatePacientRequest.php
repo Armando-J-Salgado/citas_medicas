@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdatePacientRequest extends FormRequest
 {
@@ -22,12 +23,14 @@ class UpdatePacientRequest extends FormRequest
      */
     public function rules(): array
     {
+        $pacientId = $this->route('pacient')?->id ?? $this->route('pacient');
+
         return [
             'name' => ['sometimes','required', 'string', 'max:255'],
             'lastname' => ['sometimes', 'required', 'string', 'max:255'],
-            'dui' => ['sometimes', 'required', 'string', 'regex:/^\d{8}-\d$/', 'unique:pacients,dui'],
-            'phone_number' => ['sometimes', 'required', 'string', 'regex:/^\d{4}-\d{4}$/', 'unique:pacients,phone_number'],
-            'gender' => ['sometimes', 'required', 'string', 'in: male, female']
+            'dui' => ['sometimes', 'required', 'string', 'regex:/^\d{8}-\d$/', Rule::unique('pacients', 'dui')->ignore($pacientId)],
+            'phone_number' => ['sometimes', 'required', 'string', 'regex:/^\d{4}-\d{4}$/', Rule::unique('pacients', 'phone_number')->ignore($pacientId)],
+            'gender' => ['sometimes', 'required', 'string', 'in:male,female']
         ];
     }
 }
