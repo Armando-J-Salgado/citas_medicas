@@ -64,7 +64,9 @@ Route::middleware('auth:sanctum')->prefix('/v1')->group(function () {
     Route::get('pacient/{pacient}',[PacientController::class,'show'])
     ->missing(fn () => response()
     ->json(['message' => 'There are no matches for the searched patient'], 404));;
-    Route::patch('pacient/{pacient}',[PacientController::class,'update']);
+    Route::patch('pacient/{pacient}',[PacientController::class,'update'])
+    ->missing(fn () => response()
+    ->json(['message' => 'There are no matches for the searched patient'], 404));;
 
     //Medical History routes
     Route::get('medical-history',[MedicalHistoryController::class,'index']);
@@ -72,6 +74,8 @@ Route::middleware('auth:sanctum')->prefix('/v1')->group(function () {
     Route::get('medical-history/{medicalHistory}',[MedicalHistoryController::class,'show'])
     ->missing(fn () => response()
     ->json(['message' => 'There are no matches for the searched medical history'], 404));;
-    Route::patch('medical-history/{medicalHistory}',[MedicalHistoryController::class,'update']);
+    Route::patch('medical-history/{medicalHistory}',[MedicalHistoryController::class,'update'])
+    ->missing(fn () => response()
+    ->json(['message' => 'There are no matches for the searched medical history'], 404));;
 
 });
