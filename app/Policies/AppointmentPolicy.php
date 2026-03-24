@@ -12,7 +12,7 @@ class AppointmentPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->$user->can('appointments.view');
+        return $user->can('appointments.view');
     }
 
     /**
