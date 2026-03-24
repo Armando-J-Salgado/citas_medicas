@@ -13,6 +13,7 @@ use Filament\Actions\ViewAction;
 use Filament\Forms\Components\TextInput;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Resource;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
@@ -46,18 +47,55 @@ class PacientResource extends Resource
     {
         return $schema
             ->components([
-                TextEntry::make('name'),
-                TextEntry::make('lastname'),
-                TextEntry::make('phone_number'),
-                TextEntry::make('dui')
-                    ->placeholder('-'),
-                TextEntry::make('gender'),
-                TextEntry::make('created_at')
-                    ->dateTime()
-                    ->placeholder('-'),
-                TextEntry::make('updated_at')
-                    ->dateTime()
-                    ->placeholder('-'),
+                Section::make('Datos del Paciente')
+                    ->icon('heroicon-o-user')
+                    ->columns(2)
+                    ->schema([
+                        TextEntry::make('name'),
+                        TextEntry::make('lastname'),
+                        TextEntry::make('phone_number'),
+                        TextEntry::make('dui')
+                            ->placeholder('-'),
+                        TextEntry::make('gender')
+                            ->badge()
+                            ->color(fn (string $state) => match($state) {
+                                'male'=> 'info',
+                                'female'=> 'pink',
+                                default => 'gray',
+                            }),
+                        TextEntry::make('created_at')
+                            ->dateTime()
+                            ->placeholder('-'),
+                        TextEntry::make('updated_at')
+                            ->dateTime()
+                            ->placeholder('-'),
+                    ]),
+                Section::make('Expediente Clínico')
+                ->icon('heroicon-o-clipboard-document-list')
+                ->relationship('MedicalHistory')
+                ->columns(2)
+                ->schema([
+                    TextEntry::make('pacient.name')
+                        ->label('Pacient'),
+                    TextEntry::make('weight')
+                        ->numeric(),
+                    TextEntry::make('height')
+                        ->numeric(),
+                    TextEntry::make('chronic_diseases')
+                        ->placeholder('-'),
+                    TextEntry::make('allergies')
+                        ->placeholder('-'),
+                    TextEntry::make('date_of_birth')
+                        ->date(),
+                    TextEntry::make('medications')
+                        ->placeholder('-'),
+                    TextEntry::make('created_at')
+                        ->dateTime()
+                        ->placeholder('-'),
+                    TextEntry::make('updated_at')
+                        ->dateTime()
+                        ->placeholder('-'),
+                ]),
             ]);
     }
 
