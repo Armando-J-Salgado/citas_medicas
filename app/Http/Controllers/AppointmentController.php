@@ -36,18 +36,8 @@ class AppointmentController extends Controller
         // to get the validated request data
         $validatedData = $request->validated();
         
-        // to check if the doctor already has an appointment at this time
-        $conflict = Appointment::where('doctor_id', $request->doctor_id)
-            ->where('date', $request->date)
-            ->where('time', $request->time)
-            ->exists();
-
-        // to reject the appointment if there is a conflict
-        if ($conflict) {
-            return response()->json([
-                'message' => 'The doctor already has an appointment scheduled at this time.'
-            ], 422);
-        }
+        // calculate end_at (30 minutes after start_at)
+        $validatedData['end_at'] = \Carbon\Carbon::parse($validatedData['start_at'])->addMinutes(30)->format('Y-m-d H:i:s');
 
         // to create a new appointment
         $appointment = Appointment::create($validatedData);
@@ -80,6 +70,10 @@ class AppointmentController extends Controller
     {
         // to get the validated request data
         $validatedData = $request->validated();
+
+        if (isset($validatedData['start_at'])) {
+            $validatedData['end_at'] = \Carbon\Carbon::parse($validatedData['start_at'])->addMinutes(30)->format('Y-m-d H:i:s');
+        }
 
         // to update the appointment
         $appointment->update($validatedData);
