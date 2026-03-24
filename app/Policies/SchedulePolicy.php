@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Models\Schedule;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class SchedulePolicy
 {
@@ -13,7 +12,7 @@ class SchedulePolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasAnyRole(['administrador', 'medico', 'asistente']);
+        return $user->can('schedules.view');
     }
 
     /**
@@ -21,11 +20,16 @@ class SchedulePolicy
      */
     public function view(User $user, Schedule $schedule): bool
     {
+
+        if (! $user->can('schedules.view')) {
+            return false;
+        }
+
         if ($user->hasRole('medico')) {
             return $schedule->user_id === $user->id;
         }
 
-        return $user->hasAnyRole(['administrador', 'asistente']);
+        return true;
     }
 
     /**
@@ -33,7 +37,7 @@ class SchedulePolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasAnyRole(['administrador', 'medico', 'asistente']);
+        return $user->can('schedules.create');
     }
 
     /**
@@ -41,11 +45,16 @@ class SchedulePolicy
      */
     public function update(User $user, Schedule $schedule): bool
     {
+
+        if (! $user->can('schedules.update')) {
+            return false;
+        }
+
          if ($user->hasRole('medico')) {
             return $schedule->user_id === $user->id;
         }
         
-        return $user->hasAnyRole(['administrador', 'medico', 'asistente']);
+        return true;
     }
 
     /**
@@ -53,7 +62,7 @@ class SchedulePolicy
      */
     public function delete(User $user, Schedule $schedule): bool
     {
-        return false;
+        return $user->can('schedules.delete');
     }
 
     /**

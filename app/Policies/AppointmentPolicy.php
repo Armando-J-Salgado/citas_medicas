@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Models\Appointment;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class AppointmentPolicy
 {
@@ -13,7 +12,7 @@ class AppointmentPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasAnyRole(['administrador', 'medico', 'asistente']);
+        return $user->$user->can('appointments.view');
     }
 
     /**
@@ -21,10 +20,15 @@ class AppointmentPolicy
      */
     public function view(User $user, Appointment $appointment): bool
     {
+
+        if (! $user->can('appointments.view')) {
+            return false;
+        }
+
         if ($user->hasRole('medico')) {
             return $appointment->user_id === $user->id;
         }
-        return $user->hasAnyRole(['administrador', 'asistente']);
+        return true;
     }
 
     /**
@@ -32,7 +36,7 @@ class AppointmentPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasAnyRole(['administrador', 'medico', 'asistente']);
+        return $user->can('appointments.create');
     }
 
     /**
@@ -40,7 +44,7 @@ class AppointmentPolicy
      */
     public function update(User $user, Appointment $appointment): bool
     {
-        return $user->hasAnyRole(['administrador', 'medico', 'asistente']);
+        return $user->can('appointments.update');
     }
 
     /**
@@ -48,7 +52,7 @@ class AppointmentPolicy
      */
     public function delete(User $user, Appointment $appointment): bool
     {
-        return false;
+        return $user->can('appointments.delete');
     }
 
     /**

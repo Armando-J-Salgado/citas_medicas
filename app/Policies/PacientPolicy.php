@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Models\Pacient;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class PacientPolicy
 {
@@ -13,7 +12,7 @@ class PacientPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasAnyRole(['administrador', 'medico', 'asistente']);
+        return $user->can('pacients.view');
     }
 
     /**
@@ -21,7 +20,7 @@ class PacientPolicy
      */
     public function view(User $user, Pacient $pacient): bool
     {
-        return $user->hasAnyRole(['administrador', 'medico', 'asistente']);
+        return $user->can('pacients.view');
     }
 
     /**
@@ -29,7 +28,7 @@ class PacientPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasAnyRole(['administrador', 'asistente']);
+        return $user->can('pacients.create');
     }
 
     /**
@@ -37,7 +36,7 @@ class PacientPolicy
      */
     public function update(User $user, Pacient $pacient): bool
     {
-        return $user->hasAnyRole(['administrador', 'asistente']);
+        return $user->can('pacients.update');
     }
 
     /**
@@ -45,7 +44,7 @@ class PacientPolicy
      */
     public function delete(User $user, Pacient $pacient): bool
     {
-        return false;
+        return $user->can('pacients.delete');
     }
 
     /**

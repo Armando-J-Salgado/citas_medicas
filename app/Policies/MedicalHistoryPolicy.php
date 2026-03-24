@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Models\MedicalHistory;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class MedicalHistoryPolicy
 {
@@ -13,7 +12,7 @@ class MedicalHistoryPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasAnyRole(['administrador', 'medico', 'asistente']);
+        return $user->can('medical_histories.view');
     }
 
     /**
@@ -21,7 +20,7 @@ class MedicalHistoryPolicy
      */
     public function view(User $user, MedicalHistory $medicalHistory): bool
     {
-        return $user->hasAnyRole(['administrador', 'medico', 'asistente']);
+        return $user->can('medical_histories.view');
     }
 
     /**
@@ -29,7 +28,7 @@ class MedicalHistoryPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasAnyRole(['administrador', 'medico','asistente']);
+        return $user->can('medical_histories.create');
     }
 
     /**
@@ -37,7 +36,7 @@ class MedicalHistoryPolicy
      */
     public function update(User $user, MedicalHistory $medicalHistory): bool
     {
-        return $user->hasAnyRole(['administrador', 'medico']);
+        return $user->can('medical_histories.update');
     }
 
     /**
@@ -45,7 +44,7 @@ class MedicalHistoryPolicy
      */
     public function delete(User $user, MedicalHistory $medicalHistory): bool
     {
-        return false;
+        return $user->can('medical_histories.delete');
     }
 
     /**
