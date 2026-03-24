@@ -1,58 +1,31 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Sistema de Gestión de Citas Médicas - Índice y Guía del Proyecto
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Repositorio del Backend y Panel Administrativo de la Clínica.
 
-## About Laravel
+## 1. Entidades Core y Modelos de Base de Datos
+- **Usuarios (y Roles):** [`app/Models/User.php`](./app/Models/User.php) - Modela Administradores, Médicos y Asistentes.
+- **Pacientes:** [`app/Models/Pacient.php`](./app/Models/Pacient.php) - Almacena los datos personales de la clínica.
+- **Expediente Clínico:** [`app/Models/MedicalHistory.php`](./app/Models/MedicalHistory.php) - Enlaza históricamente la información de un paciente (relación 1:1 o 1:N).
+- **Citas Médicas:** [`app/Models/Appointment.php`](./app/Models/Appointment.php) - El núcleo que articula a un paciente con un médico en un horario específico.
+- **Horarios/Agendas:** [`app/Models/Schedule.php`](./app/Models/Schedule.php) - Las agendas funcionales para cada médico.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 2. API RESTful y Lógica de Citas
+- **Rutas del API Endpoints:** [`routes/api.php`](./routes/api.php)
+- **Controlador de Citas:** [`app/Http/Controllers/AppointmentController.php`](./app/Http/Controllers/AppointmentController.php) - Controla el flujo del `POST /api/appointments` para asegurar la correcta validación y persistencia de las reservas médicas.
+- **Peticiones y Validaciones:** Directorio [`app/Http/Requests/`](./app/Http/Requests/) - Donde se incluye la robusta inspección y rechazo de citas cruzadas (`422 Unprocessable Entity`).
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 3. Seguridad y Autorización (Policies)
+- **Control de Citas:** [`app/Policies/AppointmentPolicy.php`](./app/Policies/AppointmentPolicy.php) - (Ej: Restringe que el médico elimine citas).
+- **Protección del Expediente:** [`app/Policies/MedicalHistoryPolicy.php`](./app/Policies/MedicalHistoryPolicy.php) - (Ej: Limita la capacidad de edición de los asistentes respecto a datos clínicos confidenciales).
+- **Gestión Administrativa:** [`app/Policies/UserPolicy.php`](./app/Policies/UserPolicy.php) - Protege transversalmente para que únicamente un Administrador pueda afectar el acceso de los empleados.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## 4. Panel Administrativo TALL (Filament)
+- **Gestión de Citas Administrativas:** Directorio [`app/Filament/Resources/Appointments`](./app/Filament/Resources/Appointments) - Presentación enfocada (el médico ve su agenda, el asistente controla la coordinación general).
+- **Módulo de Pacientes (Infolists):** Directorio [`app/Filament/Resources/Pacients`](./app/Filament/Resources/Pacients) - Se listan expedientes con diseño elegante integrado.
+- **Gestión Segura de Roles:** Directorio [`app/Filament/Resources/Users`](./app/Filament/Resources/Users) - Un recurso bloqueado en la navegación para roles subalternos.
+- **Configuración del Panel y Dashboard Inicial:** [`app/Providers/Filament/AdminPanelProvider.php`](./app/Providers/Filament/AdminPanelProvider.php) - Integración de Stat Cards y Widgets estadísticos.
 
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
-
-```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
-```
-
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## 5. Población de Datos (Seeders y Factories)
+Finalmente, para dar marcha al proyecto de forma instatánea con `php artisan migrate:seed`:
+- **Seeder Principal:** [`database/seeders/DatabaseSeeder.php`](./database/seeders/DatabaseSeeder.php) - Genera desde cero los roles, las cuentas maestras de test, y llama de forma secuencial al resto de factorías.
+- **Factories (Faker):** Dentro de [`database/factories/`](./database/factories/) habitan las lógicas para inventar cientos de médicos hipotéticos y citas esparcidas lógicamente.
