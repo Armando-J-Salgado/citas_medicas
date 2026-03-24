@@ -2,6 +2,16 @@
     <x-filament::section>
         <x-slot name="heading">Calendario de Citas</x-slot>
 
+        <style>
+            .dark .fc-theme-standard th {
+                background-color: rgb(24 24 27); /* bg-zinc-900 */
+                color: white;
+            }
+            .dark .fc-col-header-cell-cushion {
+                color: #e4e4e7; /* text-zinc-200 */
+            }
+        </style>
+
         <div
             x-data
             x-init="
