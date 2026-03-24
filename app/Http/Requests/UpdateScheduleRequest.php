@@ -23,7 +23,10 @@ class UpdateScheduleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'user_id' => ['sometimes', 'required', 'integer', 'exists:users,id'],
+            'day_of_week' => ['sometimes', 'required', 'integer', 'between:0,6'],
+            'start_at' => ['sometimes', 'required', 'date_format:H:i'],
+            'end_at' => ['sometimes', 'required', 'date_format:H:i', 'after:start_at']
         ];
     }
 }
