@@ -14,6 +14,15 @@ class MedicalHistoryResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'pacient_id' => $this->pacient_id,
+            'weight' => $this->weight . ' lb',
+            'height' => $this->height . ' m',
+            'chronic_diseases' => $this->chronic_diseases,
+            'allergies' => $this->allergies,
+            'date_of_birth' => $this->date_of_birth,
+            'medications' => $this->medications
+        ];
     }
 }

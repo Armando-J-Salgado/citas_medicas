@@ -23,7 +23,13 @@ class UpdateMedicalHistoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'pacient_id' => ['sometimes','required', 'integer', 'exists:pacients,id'],
+            'weight' => ['sometimes', 'required', 'numeric', 'gt:0'],
+            'height' => ['sometimes', 'required', 'numeric', 'gt:0'],
+            'chronic_diseases' => ['sometimes', 'required', 'string'],
+            'allergies' => ['sometimes', 'required', 'string'],
+            'date_of_birth' => ['sometimes', 'required', 'date'],
+            'medications' => ['sometimes', 'required', 'string']
         ];
     }
 }

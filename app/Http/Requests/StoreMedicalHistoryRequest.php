@@ -23,7 +23,13 @@ class StoreMedicalHistoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'pacient_id' => ['required', 'integer', 'exists:pacients,id'],
+            'weight' => ['required', 'numeric', 'gt:0'],
+            'height' => ['required', 'numeric', 'gt:0'],
+            'chronic_diseases' => ['required', 'string'],
+            'allergies' => ['required', 'string'],
+            'date_of_birth' => ['required', 'date'],
+            'medications' => ['required', 'string']
         ];
     }
 }
