@@ -2,7 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AppointmentController;
 
 //Routes that do not require Authentication
 Route::post("/v1/auth/login", [AuthController::class,"login"]);
@@ -19,11 +21,20 @@ Route::middleware('auth:sanctum')->prefix('/v1')->group(function () {
 
     // TODO: CRUD Schedule para médicos
     // For updating, the doctor must be informed that previous appointments can not be changed, but future ones could be
+    Route::get('/schedules', [ScheduleController::class, 'index']);
+    Route::get('/schedules/{id}', [ScheduleController::class, 'show']);
+    Route::post('/schedules', [ScheduleController::class, 'store']);
+    Route::put('/schedules/{id}', [ScheduleController::class, 'update']);
+    Route::delete('/schedules/{id}', [ScheduleController::class, 'destroy']);
 
     // TODO: CRUD Appointment for pacients
+    Route::get('/appointments', [AppointmentController::class, 'index']);
+    Route::get('/appointments/{id}', [AppointmentController::class, 'show']);
+    Route::post('/appointments', [AppointmentController::class, 'store']);
+    Route::put('/appointments/{id}', [AppointmentController::class, 'update']);
+    Route::delete('/appointments/{id}', [AppointmentController::class, 'destroy']);
     
     //Authtentication routes
     Route::get('/auth/profile', [AuthController::class, 'profile']);
     Route::post('/auth/logout', [AuthController::class,'logout']);
-
 });
