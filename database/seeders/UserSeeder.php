@@ -23,6 +23,17 @@ class UserSeeder extends Seeder
             "password"=>Hash::make("Software@26"),
         ])->assignRole("administrador");
 
+        User::factory()->create([
+            "name"=>"Stephen Strange",
+            "email"=> "doctor@mail.com",
+            "password"=>Hash::make("Software@26"),
+        ])->assignRole("medico");
+
+        User::factory()->create([
+            "name"=> "Johny Storm",
+            "email"=>"asistente@email.com",
+            "password"=>Hash::make("Software@26"),
+        ]);
 
         // Usuarios asistentes
         User::factory(10)->asistente()->create()->each(function ($user) {
