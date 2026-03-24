@@ -26,7 +26,7 @@ class StoreAppointmentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'start_at' => ['required', 'datetime_format:Y-m-d H:i', 'before:end_at'],
+            'start_at' => ['required', 'date_format:Y-m-d H:i:s'],
             'user_id' => ['required', 'integer', 'exists:users,id'],
             'pacient_id' => ['required', 'integer', 'exists:pacients,id'],
 
@@ -39,33 +39,28 @@ class StoreAppointmentRequest extends FormRequest
                 if ($validator->errors()->has('start_at') || $validator->errors()->has('user_id')) {
                     return;
                 }
-                $startAt = $this->input('start_at');
+                $startAt = \Carbon\Carbon::parse($this->input('start_at'));
                 $endAt = $startAt->copy()->addMinutes(30);
                 $userId = $this->input('user_id');
                 $pacientId = $this->input('pacient_id');
 
-                if($available = Schedule::where('user_id', $userId)
+                $available = Schedule::where('user_id', $userId)
                     ->where('day_of_week', $startAt->dayOfWeek)
-                    ->whereTime('start_at', '<=', $startAt->format('H:i'))
-                    ->whereTime('end_at', '>=', $endAt->format('H:i'))
-                    ->exists())
-                {
+                    ->whereTime('start_at', '<=', $startAt->format('H:i:s'))
+                    ->whereTime('end_at', '>=', $endAt->format('H:i:s'))
+                    ->exists();
+
+                if ($available) {
                     $conflict = Appointment::where('user_id', $userId)
-                        ->where(function ($query) use ($startAt, $endAt) {
-                            $query->whereBetween('start_at', [$startAt, $endAt])
-                                ->orWhereBetween('end_at', [$startAt, $endAt])
-                                ->orWhere(function ($query) use ($startAt, $endAt) {
-                                    $query->where('start_at', '<=', $startAt)
-                                        ->where('end_at', '>=', $endAt);
-                                }) -> exists();
-                        })
+                        ->where('start_at', '<', $endAt)
+                        ->where('end_at', '>', $startAt)
                         ->exists();
-                }
-                else {
+                } else {
                     $conflict = true;
                 }
+                
                 if ($conflict) {
-                    $validator->errors()->add('start_at', 'The doctor already has an appointment at this time.');
+                    $validator->errors()->add('start_at', 'The doctor does not have available schedules at this time or already has an appointment.');
                 }
             }
         ];

@@ -14,7 +14,7 @@ Route::post("/v1/auth/login", [AuthController::class,"login"]);
 Route::middleware('auth:sanctum')->prefix('/v1')->group(function () {
 
     //Routes that require Authentication go here
-    // TODO: CRUD users
+    // CRUD users
     Route::get('/users', [UserController::class, 'index']);
     Route::get('/users/{user}', [UserController::class, 'show'])
     ->missing(fn () => response()
@@ -27,7 +27,7 @@ Route::middleware('auth:sanctum')->prefix('/v1')->group(function () {
     ->missing(fn () => response()
     ->json(['message' => 'There are no matches for the searched user'], 404));;
 
-    // TODO: CRUD Schedule para médicos
+    // CRUD Schedule para médicos
     // For updating, the doctor must be informed that previous appointments can not be changed, but future ones could be
     Route::get('/schedules', [ScheduleController::class, 'index']);
     Route::get('/schedules/{schedule}', [ScheduleController::class, 'show'])
@@ -41,7 +41,7 @@ Route::middleware('auth:sanctum')->prefix('/v1')->group(function () {
     ->missing(fn () => response()
     ->json(['message' => 'There are no matches for the searched schedule'], 404));;
 
-    // TODO: CRUD Appointment for pacients
+    // CRUD Appointment for pacients
     Route::get('/appointments', [AppointmentController::class, 'index']);
     Route::get('/appointments/{appointment}', [AppointmentController::class, 'show'])
     ->missing(fn () => response()
