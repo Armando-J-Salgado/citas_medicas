@@ -13,7 +13,7 @@ class MedicalHistoryController extends Controller
 {
     use AuthorizesRequests;
     public function __construct() {
-        $this->authorizeResource(MedicalHistory::class);
+        $this->authorizeResource(MedicalHistory::class,  'medicalHistory');
     }
 
     /**

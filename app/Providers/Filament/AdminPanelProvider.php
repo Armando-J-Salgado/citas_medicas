@@ -20,6 +20,8 @@ use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Filament\Support\Assets\Js;
+use Filament\Support\Assets\Css;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -59,6 +61,11 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
+            ])
+            ->assets([
+                Css::make('fullcalendar-css', 'https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.css'),
+                Js::make('fullcalendar-js', 'https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'),
+                Js::make('fullcalendar-locale', 'https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/locales/es.global.min.js'),
             ]);
     }
 }

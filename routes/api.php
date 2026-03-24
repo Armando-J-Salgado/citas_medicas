@@ -28,7 +28,6 @@ Route::middleware('auth:sanctum')->prefix('/v1')->group(function () {
     ->json(['message' => 'There are no matches for the searched user'], 404));;
 
     // CRUD Schedule para médicos
-    // For updating, the doctor must be informed that previous appointments can not be changed, but future ones could be
     Route::get('/schedules', [ScheduleController::class, 'index']);
     Route::get('/schedules/{schedule}', [ScheduleController::class, 'show'])
     ->missing(fn () => response()
