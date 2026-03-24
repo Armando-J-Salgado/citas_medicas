@@ -16,7 +16,7 @@ class CitasChart extends ChartWidget
         $fecha = Carbon::today()->subDays($daysAgo);
         return [
             'fecha' => $fecha->translatedFormat('D d/m'),
-            'total'=> Appointment::where('start_at', $fecha)->count(),
+            'total'=> Appointment::whereDate('start_at', $fecha)->count(),
             ];
         });
         return [
