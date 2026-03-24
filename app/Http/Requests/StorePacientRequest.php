@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StorePacientRequest extends FormRequest
 {
@@ -27,7 +28,7 @@ class StorePacientRequest extends FormRequest
             'lastname' => ['required', 'string', 'max:255'],
             'dui' => ['required', 'string', 'regex:/^\d{8}-\d$/', 'unique:pacients,dui'],
             'phone_number' => ['required', 'string', 'regex:/^\d{4}-\d{4}$/', 'unique:pacients,phone_number'],
-            'gender' => ['required', 'string', 'in:male,female']
+            'gender' => ['required', 'string', Rule::in(['male', 'female'])]
         ];
     }
 }
