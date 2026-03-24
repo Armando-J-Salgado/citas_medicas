@@ -23,7 +23,11 @@ class StorePacientRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => ['required', 'string', 'max:255'],
+            'lastname' => ['required', 'string', 'max:255'],
+            'dui' => ['required', 'string', 'regex:/^\d{8}-\d$/', 'unique:pacients,dui'],
+            'phone_number' => ['required', 'string', 'regex:/^\d{4}-\d{4}$/', 'unique:pacients,phone_number'],
+            'gender' => ['required', 'string', 'in: male, female']
         ];
     }
 }
