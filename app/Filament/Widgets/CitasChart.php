@@ -35,7 +35,7 @@ class CitasChart extends ChartWidget
 
     protected function getType(): string
     {
-        return 'line';
+        return 'bar';
     }
 
     protected static ?int $sort = 2;
