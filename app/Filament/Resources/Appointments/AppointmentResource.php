@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Appointments;
 
 use App\Filament\Resources\Appointments\Pages\ManageAppointments;
+use App\Http\Requests\StoreAppointmentRequest;
 use App\Models\Appointment;
 use BackedEnum;
 use Filament\Actions\BulkActionGroup;
@@ -29,18 +30,22 @@ class AppointmentResource extends Resource
 
     public static function form(Schema $schema): Schema
     {
+        $rules = (new StoreAppointmentRequest())->rules();
         return $schema
             ->components([
                 DateTimePicker::make('start_at')
                     ->required(),
                 DateTimePicker::make('end_at')
-                    ->required(),
+                    ->required()
+                    ->rules($rules['end_at'] ?? []),
                 Select::make('user_id')
                     ->relationship('user', 'name')
-                    ->required(),
+                    ->required()
+                    ->rules($rules['user_id'] ?? []),
                 Select::make('pacient_id')
                     ->relationship('pacient', 'name')
-                    ->required(),
+                    ->required()
+                    ->rules($rules['pacient_id'] ?? []),
             ]);
     }
 

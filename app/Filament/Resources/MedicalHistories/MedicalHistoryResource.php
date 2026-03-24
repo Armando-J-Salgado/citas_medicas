@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\MedicalHistories;
 
 use App\Filament\Resources\MedicalHistories\Pages\ManageMedicalHistories;
+use App\Http\Requests\StoreMedicalHistoryRequest;
 use App\Models\MedicalHistory;
 use BackedEnum;
 use Filament\Actions\BulkActionGroup;
@@ -30,25 +31,33 @@ class MedicalHistoryResource extends Resource
 
     public static function form(Schema $schema): Schema
     {
+        $rules = (new StoreMedicalHistoryRequest())->rules();
         return $schema
             ->components([
                 Select::make('pacient_id')
                     ->relationship('pacient', 'name')
-                    ->required(),
+                    ->required()
+                    ->rules($rules['pacient_id'] ?? []),
                 TextInput::make('weight')
                     ->required()
-                    ->numeric(),
+                    ->numeric()
+                    ->rules($rules['weight'] ?? []),
                 TextInput::make('height')
                     ->required()
-                    ->numeric(),
+                    ->numeric()
+                    ->rules($rules['height'] ?? []),
                 TextInput::make('chronic_diseases')
-                    ->default(null),
+                    ->default(null)
+                    ->rules($rules['chronic_diseases'] ?? []),
                 TextInput::make('allergies')
-                    ->default(null),
+                    ->default(null)
+                    ->rules($rules['allergies'] ?? []),
                 DatePicker::make('date_of_birth')
-                    ->required(),
+                    ->required()
+                    ->rules($rules['date_of_birth'] ?? []),
                 TextInput::make('medications')
-                    ->default(null),
+                    ->default(null)
+                    ->rules($rules['medications'] ?? []),
             ]);
     }
 
