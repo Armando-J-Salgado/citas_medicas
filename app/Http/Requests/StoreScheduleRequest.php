@@ -23,7 +23,10 @@ class StoreScheduleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'user_id' => ['required', 'integer', 'exists:users,id'],
+            'day_of_week' => ['required', 'integer', 'between:0,6'],
+            'start_at' => ['required', 'date_format:H:i'],
+            'end_at' => ['required', 'date_format:H:i', 'after:start_at']
         ];
     }
 }
