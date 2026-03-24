@@ -28,13 +28,23 @@ class ScheduleResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'id';
 
+    protected const DAYS = [
+        0=> 'Domingo',
+        1=> 'Lunes',
+        2=> 'Martes',
+        3=> 'Miércoles',
+        4=> 'Jueves',
+        5=> 'Viernes',
+        6=> 'Sábado',
+    ];
+
     public static function form(Schema $schema): Schema
     {
         return $schema
             ->components([
-                TextInput::make('day_of_week')
-                    ->required()
-                    ->numeric(),
+                Select::make('day_of_week')
+                    ->options(self::DAYS)
+                    ->required(),
                 TimePicker::make('start_at')
                     ->required(),
                 TimePicker::make('end_at')
@@ -50,7 +60,7 @@ class ScheduleResource extends Resource
         return $schema
             ->components([
                 TextEntry::make('day_of_week')
-                    ->numeric(),
+                    ->formatStateUsing(fn (int $state) => self::DAYS[$state] ?? $state),
                 TextEntry::make('start_at')
                     ->time(),
                 TextEntry::make('end_at')
@@ -72,7 +82,7 @@ class ScheduleResource extends Resource
             ->recordTitleAttribute('id')
             ->columns([
                 TextColumn::make('day_of_week')
-                    ->numeric()
+                    ->formatStateUsing(fn (int $state) => self::DAYS[$state] ?? $state)
                     ->sortable(),
                 TextColumn::make('start_at')
                     ->time()
